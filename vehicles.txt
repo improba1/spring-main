@@ -1,0 +1,16 @@
+CAR, BMW, m5 comp, 2024, 100000, rented, 0
+CAR, BMW, m3 competition, 2025, 150000, rented, 1
+MOTOR, kawasaki, z400, 2014, 10000, not rented, a2, 2
+CAR, honda, civic, 2000, 3000, not rented, 3
+CAR, akura, 4, 2000, 3000, not rented, 4
+CAR, alfa romeo, giulia, 2021, 24000, not rented, 5
+CAR, bentley , bentayga, 2021, 231000, not rented, 6
+CAR, ford, escape, 2016, 14300, not rented, 7
+MOTOR, bajaj, pulsar, 2021, 1800, not rented, a2, 8
+MOTOR, aprilia, RSV4, 2021, 20000, not rented, A, 9
+MOTOR, suzuki, GSX1300R Hayabusa, 2021, 18999, not rented, A, 10
+CAR, renault, Megane IV, 2019, 16750, not rented, 11
+CAR, dodge, Challenger III, 2021, 41000, not rented, 12
+MOTOR, Yamaha, YZF R1, 2024, 24500, not rented, A, 14
+MOTOR, BMW, R 1800 Transcontinental, 2022, 44100, not rented, A, 15
+CAR, Lexus, GX 4.6 AT 4WD, 2022, 60000, not rented, 15
