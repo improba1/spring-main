@@ -1,25 +1,30 @@
 package org.example;
 
 public class Motorcycle extends Vehicle {
-    String kategoria;
-    public Motorcycle( String brand, String model, int year, int price, String kategoria, boolean rented, int id){
-        this.brand = brand;
-        this.model = model;
-        this.year = year;
-        this.price = price;
+    private String kategoria;
+    public Motorcycle( String brand, String model, int year, int price, String kategoria, boolean rented, String id){
+        super.setBrand(brand);
+        super.setModel(model);
+        super.setModel(model);
+        super.setYear(year);
+        super.setPrice(price);
         this.kategoria = kategoria;
-        this.rented = rented;
-        this.type = Type.MOTOR;
-        this.id = id;
+        super.setType(Type.MOTOR);
+        super.setId(id);
+        super.setIsRented(rented);
     }
     public String toCSV(){
-        if(rented)
-            return type + ", " + brand + ", " + model + ", " + year + ", " + price + ", rented" + ", " + kategoria + ", " + id + "\n";
+        if(getIsRented())
+            return getType() + ", " + getBrand() + ", " + getModel() + ", " + getYear() + ", " + getPrice() + ", rented("+ getRentalTime() + "), " + kategoria + ", " + getId() + "\n";
         else
-            return type + ", " + brand + ", " + model + ", " + year + ", " + price + ", not rented" + ", " + kategoria + ", " + id + "\n";
+        return getType() + ", " + getBrand() + ", " + getModel() + ", " + getYear() + ", " + getPrice() + ", not rented" + ", " + kategoria + ", " + getId() + "\n";
     }
 
     public String toString(){
-        return "brand: " + brand + ", model: " + model + ", year: " + year + ", price: " + price + "$, " + ", category: " + kategoria + ", id: " + id + "\n";
+        return "brand: " + getBrand() + ", model: " + getModel() + ", year: " + getYear() + ", price: " + getPrice() + "$" + ", category: " + kategoria + ", id: " + getId() + "\n";
+    }
+
+    public String toStringForUsers(){
+        return getBrand() + ", " + getModel() + ", " + getYear() + ", " + getPrice() + ", " + getId() + ", " + getRentalTime() + ", " + kategoria;
     }
 }

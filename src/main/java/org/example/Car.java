@@ -3,23 +3,28 @@ package org.example;
 import java.io.IOException;
 
 public class Car extends Vehicle {
-    public Car( String brand, String model, int year, int price, boolean rented, int id) throws IOException {
-        this.brand = brand;
-        this.model = model;
-        this.year = year;
-        this.price = price;
-        this.type = Type.CAR;
-        this.rented = rented;
-        this.id = id;
+    public Car( String brand, String model, int year, int price, boolean rented, String id) throws IOException {
+        super.setBrand(brand);
+        super.setModel(model);
+        super.setModel(model);
+        super.setYear(year);
+        super.setPrice(price);
+        super.setType(Type.CAR);
+        super.setId(id);
+        super.setIsRented(rented);
     }
     public String toCSV(){
-        if(rented)
-            return type + ", " + brand + ", " + model + ", " + year + ", " + price + ", rented" + ", " + id + "\n";
+        if(getIsRented())
+            return getType() + ", " + getBrand() + ", " + getModel() + ", " + getYear() + ", " + getPrice() + ", rented("+ getRentalTime() + "), " + getId() + "\n";
         else
-            return type + ", " + brand + ", " + model + ", " + year + ", " + price + ", not rented" + ", " + id + "\n";
+        return getType() + ", " + getBrand() + ", " + getModel() + ", " + getYear() + ", " + getPrice() + ", not rented" + ", " + getId() + "\n";
     }
 
     public String toString(){
-        return "brand: " + brand + ", model: " + model + ", year: " + year + ", price: " + price + "$, " + ", id: " + id + "\n";
+        return "brand: " + getBrand() + ", model: " + getModel() + ", year: " + getYear() + ", price: " + getPrice() + "$" + ", id: " + getId() + "\n";
+    }
+
+    public String toStringForUsers(){
+        return getBrand() + ", " + getModel() + ", " + getYear() + ", " + getPrice() + ", " + getId() + ", " + getRentalTime();
     }
 }

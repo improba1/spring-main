@@ -1,54 +1,44 @@
-package org.example;
+package org.example.Repositories;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import org.apache.commons.codec.digest.DigestUtils;
+import org.example.AuthService;
+import org.example.Car;
+import org.example.InputScanner;
+import org.example.Motorcycle;
+import org.example.Role;
+import org.example.User;
+import org.example.Vehicle;
+import org.example.Interfaces.IUserRepository;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UserRepository implements IUserRepository{
     protected ArrayList<User> users = new ArrayList<>() {};
-    Authentication authentication = new Authentication();
+    VehicleRepository vehicleRepository;
 
     private String fileName = "users.txt";
 
-    public void start() throws IOException {
+    public void start(VehicleRepository vehicleRepository) throws IOException {
+        this.vehicleRepository = vehicleRepository;
         users = load(fileName);
-    }
-
-    public User checkLogin(String login) {
-        if(!authentication.checkLogin(login, users)){
-            return createUser(login);
-        }else{
-            return getUser(login);
-        }
-    }
-
-    private User createUser(String login){
-        while (true) {
-            System.out.println("Create password: ");
-            String password = InputScanner.SCANNER.nextLine();
-            System.out.println("Enter your password again: ");
-            String password2 = InputScanner.SCANNER.nextLine();
-            if (password.equals(password2)) {
-                String sha3Hex = new DigestUtils("SHA3-256").digestAsHex(password);
-                User user = new User(Role.USER, login, sha3Hex, new ArrayList<>());
-                users.add(user);
-                save();
-                System.out.println("Login and password saved");
-                return user;
-            }
-            System.out.println("Wrang password!");
-        }
     }
 
     public ArrayList<User> getUsers(){
         ArrayList<User> newUser = new ArrayList<>() {};
+        for(User u: users){
+            newUser.add(u);
+        }
+        return newUser;
+    }
+
+    public ArrayList<User> getUsersInformation(){
+        ArrayList<User> newUser = new ArrayList<>() {};
         int i = 1;
         for(User u: users){
-            System.out.println(i++ +". " + u.toString());
+            System.out.print(i++ +". " + u.toString());
             newUser.add(u);
         }
         return newUser;
@@ -59,6 +49,17 @@ public class UserRepository implements IUserRepository{
         users.add(user);
         save();
         return user;
+    }
+
+    public User getUserInformation(String login){
+        for(User v: users){
+            if(v.getLogin().equals(login)){
+                System.out.print(v.toString());
+                return v;
+            }
+        }
+        System.out.println("User not found");
+        return null;
     }
 
     public User getUser(String login){
@@ -91,7 +92,7 @@ public class UserRepository implements IUserRepository{
             String text = scan.nextLine().trim();
             if(text.isEmpty())continue;
 
-            String[] arr = text.trim().split("[ ,\\.]+");
+            String[] arr = text.trim().split(";");
             try{
                 Integer.parseInt(arr[0]);
 
@@ -99,7 +100,7 @@ public class UserRepository implements IUserRepository{
                     users.add(new User(role, login, password, rentedVehicles));
                     rentedVehicles = new ArrayList<>();
                 }
-                if(arr[1].equals("ADMIN")){
+                if(arr[1].trim().equals("ADMIN")){
                     role = Role.ADMIN;
                 }else{
                     role = Role.USER;
@@ -110,20 +111,9 @@ public class UserRepository implements IUserRepository{
 
             }catch(Exception e){
                 arr = text.trim().split(",\\s*");
-                if(arr[0].equalsIgnoreCase("CAR")){
-                    if (arr[5].trim().equalsIgnoreCase("rented")) {
-                        Vehicle v = new Car(arr[1], arr[2], Integer.parseInt(arr[3]), Integer.parseInt(arr[4]), true, Integer.parseInt(arr[6]));
-                        rentedVehicles.add(v);
-                    } else {
-                        Vehicle v = new Car(arr[1], arr[2], Integer.parseInt(arr[3]), Integer.parseInt(arr[4]), false, Integer.parseInt(arr[6]));
-                        rentedVehicles.add(v);
-                    }
-                }else{
-                    if (arr[5].trim().equalsIgnoreCase("rented")) {
-                        Vehicle v = (new Motorcycle(arr[1], arr[2], Integer.parseInt(arr[3]), Integer.parseInt(arr[4]), arr[6], true, Integer.parseInt(arr[7])));
-                        rentedVehicles.add(v);
-                    } else {
-                        Vehicle v = new Motorcycle(arr[1], arr[2], Integer.parseInt(arr[3]), Integer.parseInt(arr[4]), arr[6], false, Integer.parseInt(arr[7]));
+                for (Vehicle v: vehicleRepository.getVehicles()){
+                    if(v.getId().equals(arr[4])){
+                        v.setRentalTime(arr[5]);
                         rentedVehicles.add(v);
                     }
                 }
@@ -140,7 +130,7 @@ public class UserRepository implements IUserRepository{
         try (FileWriter fileWriter = new FileWriter(fileName, false)) {
             int index = 1;
             for(User v: users) {
-                fileWriter.write(index + ". " + v.toCSV());
+                fileWriter.write(index + "; " + v.toCSV());
                 index++;
             }
         } catch (IOException e) {
