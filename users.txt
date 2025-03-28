@@ -6,6 +6,5 @@
 	kawasaki, z400, 2014, 10000, 2, 28/03/2025 18:00:00, a2
 3; USER;user;$2a$10$pvPVTjZ/PjKm22XW4GKOselzrP2NQxFyUMRR5gQQKWFFJGFx6KzFm
 4; USER;chupik;$2a$10$th7BUo88FqhYRmuFn58W3.w8Cze99bYII3MkFAh5wpJCjR0W6L.6q
-5; USER;gavno;$2a$10$sSonkuH/klbMPzOppJ28SO.Ami5R2UPIIUH0hjkO0qVXqnQfZTz3u
-6; USER;sonik;$2a$10$8ig6O3DlCAhmfhmhuHqa..8s24aaj8T/T1VRgX9AtksLziM1xOo1K
-7; USER;kokos;$2a$10$CtorptP1/P/ThXErEt524ux5K3jIwqxjsowV0SaO.C441ohOmXONq
+5; USER;sonik;$2a$10$8ig6O3DlCAhmfhmhuHqa..8s24aaj8T/T1VRgX9AtksLziM1xOo1K
+6; USER;kokos;$2a$10$CtorptP1/P/ThXErEt524ux5K3jIwqxjsowV0SaO.C441ohOmXONq
