@@ -5,10 +5,10 @@ import java.util.ArrayList;
 public class User {
     private String login;
     private String password;
-    private Role role;
-    private ArrayList<Vehicle> rentedVehicles = new ArrayList<>();
+    private String role;
+    private transient ArrayList<Vehicle> rentedVehicles = new ArrayList<>();
 
-    public User(Role role, String login, String password, ArrayList<Vehicle> rentedVehicles){
+    public User(String role, String login, String password, ArrayList<Vehicle> rentedVehicles){
         this.login = login;
         this.password = password;
         this.role = role;
@@ -23,7 +23,7 @@ public class User {
         return password;
     }
 
-    public Role getRole(){
+    public String getRole(){
         return role;
     }
 

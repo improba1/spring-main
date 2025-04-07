@@ -22,10 +22,18 @@ public class CommandProcessor {
         this.rentalRepository = new RentalRepository(vehicleRepository, userRepository);
         this.authService = new AuthService(userRepository);
 
-        commands.put("add car", user -> {
-            if(user.getRole().equals(Role.ADMIN)){
+        commands.put("add vehicle", user -> {
+            if(user.getRole().equals("ADMIN")){
+                System.out.println("Ender a type of vehicle: ");
+                String type = InputScanner.SCANNER.nextLine();
                 try {
-                    vehicleRepository.addVehicle(Type.CAR);
+                    if(type.equalsIgnoreCase("car")){
+                    vehicleRepository.addVehicle("car");
+                    }else if(type.equalsIgnoreCase("motorcycle")){
+                        vehicleRepository.addVehicle("motorcycle");
+                    }else{
+                        vehicleRepository.addVehicle(type);
+                    }
                 } catch (IOException e) {
                     System.out.println("Error");
                 }
@@ -34,36 +42,34 @@ public class CommandProcessor {
             }
         });
 
-        commands.put("add motorcycle",user -> {
-            if(user.getRole().equals(Role.ADMIN)){
-                try {
-                    vehicleRepository.addVehicle(Type.MOTOR);
-                } catch (IOException e) {
-                    System.out.println("Error");
-                }
+        commands.put("rent vehicle", user->{
+            System.out.println("Enter a type of vehicle: ");
+            String type = InputScanner.SCANNER.nextLine();
+            if(type.equalsIgnoreCase("car")){
+                rentalRepository.rentVehicle("car", user.getLogin());
+            }else if(type.equalsIgnoreCase("motorcycle")){
+                rentalRepository.rentVehicle("motorcycle", user.getLogin());
             }else{
-                System.out.println("You don't have access");
+                rentalRepository.rentVehicle(type, user.getLogin());
             }
+            
         });
 
-        commands.put("rent car", user->{
-            rentalRepository.rentVehicle(Type.CAR, user.getLogin());
-        });
-
-        commands.put("rent motorcycle", user->{
-            rentalRepository.rentVehicle(Type.MOTOR, user.getLogin());
-        });
-
-        commands.put("return car", user->{
-            rentalRepository.returnVehicle(Type.CAR, user.getLogin());
-        });
-
-        commands.put("return motorcycle", user->{
-            rentalRepository.returnVehicle(Type.MOTOR, user.getLogin());
+        commands.put("return vehicle", user->{
+            System.out.println("Enter a type of vehicle: ");
+            String type = InputScanner.SCANNER.nextLine();
+            if (type.equalsIgnoreCase("car")){
+                rentalRepository.returnVehicle("car", user.getLogin());
+            }else if(type.equalsIgnoreCase("motorcycle")){
+                rentalRepository.returnVehicle("motorcycle", user.getLogin());
+            }else{
+                rentalRepository.returnVehicle(type, user.getLogin());
+            }
+           
         });
 
         commands.put("remove vehicle", user->{
-            if(user.getRole().equals(Role.ADMIN)){
+            if(user.getRole().equals("ADMIN")){
                 vehicleRepository.removeVehicle();
             }else{
                 System.out.println("You don't have access");
@@ -71,7 +77,7 @@ public class CommandProcessor {
         });
 
         commands.put("get users", user->{
-            if(user.getRole().equals(Role.ADMIN)){
+            if(user.getRole().equals("ADMIN")){
                 userRepository.getUsersInformation();
             }else{
                 System.out.println("You don't have access");
@@ -88,12 +94,8 @@ public class CommandProcessor {
             vehicleRepository.getVehicleInformation(id);           
         });
 
-        // commands.put("log out", user ->{
-        //     System.exit(0);
-        // });
-
         commands.put("get vehicles", user ->{
-            if(user.getRole().equals(Role.ADMIN)){
+            if(user.getRole().equals("ADMIN")){
                 for(Vehicle v: vehicleRepository.getVehicles()){
                     System.out.print(v.toString());
                 }

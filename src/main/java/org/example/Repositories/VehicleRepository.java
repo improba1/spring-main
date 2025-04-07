@@ -1,14 +1,14 @@
 package org.example.Repositories;
-import java.io.File;
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.util.*;
-
 import org.example.Car;
 import org.example.InputScanner;
+import org.example.JsonVehicleStorage;
 import org.example.Motorcycle;
-import org.example.Type;
+import org.example.UnknownVehicle;
 import org.example.Vehicle;
+import org.example.VehicleDatabaseManager;
 import org.example.Interfaces.IVehicleRepository;
 
 enum Valid{
@@ -18,10 +18,13 @@ enum Valid{
 
 public class VehicleRepository implements IVehicleRepository{
     private ArrayList<Vehicle> vehicles = new ArrayList<>() {};
-    private String filename = "vehicles.txt";
+    private String filename = "vehicles.json";
+    JsonVehicleStorage storage = new JsonVehicleStorage(filename);
+    VehicleDatabaseManager database;
 
     public void start() throws IOException {
         vehicles = load(filename);
+        database = new VehicleDatabaseManager();
     }
 
     public void removeVehicle(){
@@ -29,9 +32,7 @@ public class VehicleRepository implements IVehicleRepository{
             System.out.println("No vehicles available");
             return;
         }
-        
         System.out.println("Which vehicle you want to remove? (0 - back)");
-
         for(int i =0;i<vehicles.size();i++){
             Vehicle v = vehicles.get(i);
             System.out.print(i+1 + ". " + v.toString());
@@ -63,11 +64,12 @@ public class VehicleRepository implements IVehicleRepository{
         }
         vehicles.remove(selectedVehicle);
         System.out.print("Vehicle removed: "+ selectedVehicle.toString());
+        database.removeVehicle(selectedVehicle.getId());
         save();
     }
 
-    public void addVehicle(Type type) throws IOException {
-        String brand, model = "",year = "", price = "", category = "";
+    public void addVehicle(String type) throws IOException {
+        String brand, model = "",year = "", price = "", category = "", extra = "", id = UUID.randomUUID().toString();
         System.out.println("Enter brand (or exit): ");
         brand = InputScanner.SCANNER.nextLine();
         if (brand.equalsIgnoreCase("exit")) {
@@ -90,7 +92,7 @@ public class VehicleRepository implements IVehicleRepository{
         if(valid1 == Valid.EXIT){
             return;
         }
-        if(type.equals(Type.MOTOR)) {
+        if(type.equalsIgnoreCase("motorcycle")) {
             System.out.println("Enter category (or exit): ");
             category = InputScanner.SCANNER.nextLine();
             if(category.equalsIgnoreCase("exit")) {
@@ -109,18 +111,28 @@ public class VehicleRepository implements IVehicleRepository{
                 }
             }
         }
-        if(type.equals(Type.CAR)) {
-            Car car = new Car(brand, model, Integer.parseInt(year), Integer.parseInt(price), false, UUID.randomUUID().toString());
-            vehicles.add(car);
-            System.out.print("Added car " + car.toString());
-            save();
+        System.out.println("Enter extra information: ");
+            extra = InputScanner.SCANNER.nextLine();
+            if(extra.equalsIgnoreCase("exit")){
+                return;
+            }
+        Vehicle vehicle;
+        if(type.equals("car")) {
+            vehicle = new Car(brand, model, Integer.parseInt(year), Integer.parseInt(price), false, id, extra);
+            vehicles.add(vehicle);
+            System.out.print("Added car " + vehicle.toString());
         }
-        else{
-            Motorcycle moto = new Motorcycle(brand, model, Integer.parseInt(year), Integer.parseInt(price), category, false, UUID.randomUUID().toString());
-            vehicles.add(moto);
-            System.out.print("Added motorcycle " + moto.toString());
-            save();
+        else if(type.equals("motorcycle")){
+            vehicle = new Motorcycle(brand, model, Integer.parseInt(year), Integer.parseInt(price), category, false, id, extra);
+            vehicles.add(vehicle);
+            System.out.print("Added motorcycle " + vehicle.toString());
+        }else{
+            vehicle = new UnknownVehicle(brand, model, Integer.parseInt(year), Integer.parseInt(price), type, id, extra);
+            vehicles.add(vehicle);
+            System.out.print("Added " + type + " " + vehicle.toString());
         }
+        save();
+        database.addVehicle(vehicle);
     }
     
     Valid checkValid(String number){
@@ -151,36 +163,37 @@ public class VehicleRepository implements IVehicleRepository{
 
     @Override
     public ArrayList<Vehicle> load(String filename) throws IOException {
-        vehicles.clear();
-        File file = new File(filename);
-        if (!file.exists() || file.length() == 0) {
-            System.out.println("File is empty or does not exist");
-            return vehicles;
-        }
-        Scanner scan = new Scanner(new File(filename));
-        while (scan.hasNextLine()) {
-            String text = scan.nextLine();
-            if(text.isEmpty())continue;
-            String[] arr = text.trim().split(",\\s*");
-            if (arr[0].equals("MOTOR")) { 
-                if (arr[5].trim().equalsIgnoreCase("rented")) {
-                    Vehicle v = (new Motorcycle(arr[1], arr[2], Integer.parseInt(arr[3]), Integer.parseInt(arr[4]), arr[6], true, arr[7]));
-                    vehicles.add(v);
-                } else {
-                    Vehicle v = new Motorcycle(arr[1], arr[2], Integer.parseInt(arr[3]), Integer.parseInt(arr[4]), arr[6], false, arr[7]);
-                    vehicles.add(v);
-                }
-            } else {
-                if (arr[5].trim().equalsIgnoreCase("rented")) {
-                    Vehicle v = new Car(arr[1], arr[2], Integer.parseInt(arr[3]), Integer.parseInt(arr[4]), true, arr[6]);
-                    vehicles.add(v);
-                } else {
-                    Vehicle v = new Car(arr[1], arr[2], Integer.parseInt(arr[3]), Integer.parseInt(arr[4]), false, arr[6]);
-                    vehicles.add(v);
-                } 
-            }
-        }
-        return vehicles;
+        return storage.load();
+        // vehicles.clear();
+        // File file = new File(filename);
+        // if (!file.exists() || file.length() == 0) {
+        //     System.out.println("File is empty or does not exist");
+        //     return vehicles;
+        // }
+        // Scanner scan = new Scanner(new File(filename));
+        // while (scan.hasNextLine()) {
+        //     String text = scan.nextLine();
+        //     if(text.isEmpty())continue;
+        //     String[] arr = text.trim().split(",\\s*");
+        //     if (arr[0].equals("MOTOR")) { 
+        //         if (arr[5].trim().equalsIgnoreCase("rented")) {
+        //             Vehicle v = (new Motorcycle(arr[1], arr[2], Integer.parseInt(arr[3]), Integer.parseInt(arr[4]), arr[6], true, arr[7]));
+        //             vehicles.add(v);
+        //         } else {
+        //             Vehicle v = new Motorcycle(arr[1], arr[2], Integer.parseInt(arr[3]), Integer.parseInt(arr[4]), arr[6], false, arr[7]);
+        //             vehicles.add(v);
+        //         }
+        //     } else {
+        //         if (arr[5].trim().equalsIgnoreCase("rented")) {
+        //             Vehicle v = new Car(arr[1], arr[2], Integer.parseInt(arr[3]), Integer.parseInt(arr[4]), true, arr[6]);
+        //             vehicles.add(v);
+        //         } else {
+        //             Vehicle v = new Car(arr[1], arr[2], Integer.parseInt(arr[3]), Integer.parseInt(arr[4]), false, arr[6]);
+        //             vehicles.add(v);
+        //         } 
+        //     }
+        // }
+        // return vehicles;
     }
 
     @Override
@@ -193,16 +206,15 @@ public class VehicleRepository implements IVehicleRepository{
     }
 
 
-
-    @Override
     public void save() {
-        try (FileWriter fileWriter = new FileWriter(filename, false)) {
-            for(Vehicle v: getVehicles()) {
-                fileWriter.write(v.toCSV());
-            }
-        } catch (IOException e) {
-            System.out.println("Error in fileWriter");
-        }
+        storage.save(vehicles);
+    //     try (FileWriter fileWriter = new FileWriter(filename, false)) {
+    //         for(Vehicle v: getVehicles()) {
+    //             fileWriter.write(v.toCSV());
+    //         }
+    //     } catch (IOException e) {
+    //         System.out.println("Error in fileWriter");
+    //     }
     }
 
     public Vehicle getVehicle(String id){

@@ -2,17 +2,15 @@ package org.example;
 
 public class Motorcycle extends Vehicle {
     private String kategoria;
-    public Motorcycle( String brand, String model, int year, int price, String kategoria, boolean rented, String id){
-        super.setBrand(brand);
-        super.setModel(model);
-        super.setModel(model);
-        super.setYear(year);
-        super.setPrice(price);
+    public Motorcycle( String brand, String model, int year, int price, String kategoria, boolean rented, String id, String extra){
+        super(brand, model, year, price, "motorcycle", id, extra);
         this.kategoria = kategoria;
-        super.setType(Type.MOTOR);
-        super.setId(id);
-        super.setIsRented(rented);
     }
+
+    public String getCategory(){
+        return kategoria;
+    }
+
     public String toCSV(){
         if(getIsRented())
             return getType() + ", " + getBrand() + ", " + getModel() + ", " + getYear() + ", " + getPrice() + ", rented("+ getRentalTime() + "), " + kategoria + ", " + getId() + "\n";

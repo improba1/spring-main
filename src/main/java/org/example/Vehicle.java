@@ -7,13 +7,38 @@ abstract public class Vehicle {
     private int year;
     private int price;
     private String id;
-    private Type type;
+    private String type;
+    private String extra;
+    private String category;
 
-    public void setType(Type type){
+    Vehicle( String brand, String model, int year, int price, String type, String id, String extra){
+        this.model = model;
+        this.brand = brand;
+        this.year = year;
+        this.price = price;
+        this.type = type;
+        this.extra = extra;
+        this.id = id;
+        this.rental.setIsRented(false);
+    }
+
+    public String getCategory(){
+        return category;
+    }
+
+    public String getExtra(){
+        return extra;
+    }
+
+    public void setExtra(String extra){
+        this.extra = extra;
+    }
+
+    public void setType(String type){
         this.type = type;
     }
 
-    public Type getType(){
+    public String getType(){
         return type;
     }
 

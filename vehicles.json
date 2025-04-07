@@ -1,0 +1,76 @@
+[
+  {
+    "rental": {
+      "startTime": "05/04/2025 21:08:09",
+      "isRented": true
+    },
+    "model": "M3 comp",
+    "brand": "BMW",
+    "year": 2024,
+    "price": 100000,
+    "id": "f0d1ffc8-5490-4656-a123-3a60b4d4d0a1",
+    "type": "car",
+    "extra": "seats: 4"
+  },
+  {
+    "rental": {
+      "isRented": false
+    },
+    "model": "Juke MT",
+    "brand": "Nissan",
+    "year": 2024,
+    "price": 11000,
+    "id": "2a6d5d89-4ce4-4b10-90d4-1d9dbc619910",
+    "type": "car",
+    "extra": ""
+  },
+  {
+    "kategoria": "A",
+    "rental": {
+      "isRented": false
+    },
+    "model": "EX",
+    "brand": "kawasaki",
+    "year": 2009,
+    "price": 4000,
+    "id": "00f26e10-8416-4b5d-a6e2-a982c16ffada",
+    "type": "motorcycle",
+    "extra": ""
+  },
+  {
+    "rental": {
+      "isRented": false
+    },
+    "model": "MAN",
+    "brand": "TGA",
+    "year": 2004,
+    "price": 16000,
+    "id": "c8038def-5cfb-42d5-a624-5a18fec115ab",
+    "type": "truck",
+    "extra": ""
+  },
+  {
+    "rental": {
+      "isRented": false
+    },
+    "model": "Evinrude",
+    "brand": "150 e-tetc",
+    "year": 2023,
+    "price": 6800,
+    "id": "b5e1db57-b96e-41b8-9efb-d52846b6c522",
+    "type": "boat",
+    "extra": "4-stroke"
+  },
+  {
+    "rental": {
+      "isRented": false
+    },
+    "model": "Cooper",
+    "brand": "MINI",
+    "year": 2016,
+    "price": 28000,
+    "id": "673d889e-b7bd-4da7-9637-7b79feaacb91",
+    "type": "car",
+    "extra": "JCW GP"
+  }
+]

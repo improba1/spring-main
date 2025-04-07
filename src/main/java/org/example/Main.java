@@ -1,6 +1,9 @@
 package org.example;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import org.example.Repositories.UserRepository;
 import org.example.Repositories.VehicleRepository;
@@ -40,8 +43,10 @@ public class Main {
                 }
                 break;
             }
-
+            
             if(log_out) continue;
+
+            System.out.println("your info: " + user.toString());
 
             CommandProcessor commandProcessor = new CommandProcessor(vehicleRepository, userRepository);
             while(true){

@@ -8,8 +8,8 @@ import java.util.Scanner;
 import org.example.AuthService;
 import org.example.Car;
 import org.example.InputScanner;
+import org.example.JsonUserStorage;
 import org.example.Motorcycle;
-import org.example.Role;
 import org.example.User;
 import org.example.Vehicle;
 import org.example.Interfaces.IUserRepository;
@@ -18,11 +18,12 @@ import org.mindrot.jbcrypt.BCrypt;
 public class UserRepository implements IUserRepository{
     protected ArrayList<User> users = new ArrayList<>() {};
     VehicleRepository vehicleRepository;
-
-    private String fileName = "users.txt";
+    String fileName = "users.json";
+    JsonUserStorage storage;// = new JsonUserStorage(fileName, vehicleRepository.getVehicles());
 
     public void start(VehicleRepository vehicleRepository) throws IOException {
         this.vehicleRepository = vehicleRepository;
+        storage = new JsonUserStorage(fileName, vehicleRepository.getVehicles());
         users = load(fileName);
     }
 
@@ -44,7 +45,7 @@ public class UserRepository implements IUserRepository{
         return newUser;
     }
 
-    public User addUser(String login, String password, Role role){
+    public User addUser(String login, String password, String role){
         User user = new User(role, login, password, new ArrayList<>());
         users.add(user);
         save();
@@ -72,70 +73,70 @@ public class UserRepository implements IUserRepository{
         return null;
     }
 
-    
-
     public ArrayList<User> load(String filename) throws IOException {
         users.clear();
-        File file = new File(filename);
-        if (!file.exists() || file.length() == 0) {
-            System.out.println("File is empty or does not exist");
-            return users;
-        }
+        return storage.load();
+        // File file = new File(filename);
+        // if (!file.exists() || file.length() == 0) {
+        //     System.out.println("File is empty or does not exist");
+        //     return users;
+        // }
 
-        Scanner scan = new Scanner(new File(filename));
+        // Scanner scan = new Scanner(new File(filename));
         
-        String login = null, password = null;
-        Role role = null;
-        ArrayList<Vehicle> rentedVehicles = new ArrayList<>() {};
+        // String login = null, password = null;
+        // Role role = null;
+        // ArrayList<Vehicle> rentedVehicles = new ArrayList<>() {};
 
-        while (scan.hasNextLine()) {
-            String text = scan.nextLine().trim();
-            if(text.isEmpty())continue;
+        // while (scan.hasNextLine()) {
+        //     String text = scan.nextLine().trim();
+        //     if(text.isEmpty())continue;
 
-            String[] arr = text.trim().split(";");
-            try{
-                Integer.parseInt(arr[0]);
+        //     String[] arr = text.trim().split(";");
+        //     try{
+        //         Integer.parseInt(arr[0]);
 
-                if(login != null){
-                    users.add(new User(role, login, password, rentedVehicles));
-                    rentedVehicles = new ArrayList<>();
-                }
-                if(arr[1].trim().equals("ADMIN")){
-                    role = Role.ADMIN;
-                }else{
-                    role = Role.USER;
-                }
+        //         if(login != null){
+        //             users.add(new User(role, login, password, rentedVehicles));
+        //             rentedVehicles = new ArrayList<>();
+        //         }
+        //         if(arr[1].trim().equals("ADMIN")){
+        //             role = Role.ADMIN;
+        //         }else{
+        //             role = Role.USER;
+        //         }
 
-                login = arr[2];
-                password = arr[3];
+        //         login = arr[2];
+        //         password = arr[3];
 
-            }catch(Exception e){
-                arr = text.trim().split(",\\s*");
-                for (Vehicle v: vehicleRepository.getVehicles()){
-                    if(v.getId().equals(arr[4])){
-                        v.setRentalTime(arr[5]);
-                        rentedVehicles.add(v);
-                    }
-                }
-            }
-        }
+        //     }catch(Exception e){
+        //         arr = text.trim().split(",\\s*");
+        //         for (Vehicle v: vehicleRepository.getVehicles()){
+        //             if(v.getId().equals(arr[4])){
+        //                 v.setRentalTime(arr[5]);
+        //                 rentedVehicles.add(v);
+        //             }
+        //         }
+        //     }
+        // }
 
-        if (login != null){
-            users.add(new User(role, login, password, rentedVehicles));
-        }
-        return users;
+        // if (login != null){
+        //     users.add(new User(role, login, password, rentedVehicles));
+        // }
+        // return users;
     }
 
     public void save(){
-        try (FileWriter fileWriter = new FileWriter(fileName, false)) {
-            int index = 1;
-            for(User v: users) {
-                fileWriter.write(index + "; " + v.toCSV());
-                index++;
-            }
-        } catch (IOException e) {
-            System.out.println("Error in fileWriter");
-        }
+        storage.save(users);
+    //     try (FileWriter fileWriter = new FileWriter(fileName, false)) {
+    //         int index = 1;
+    //         for(User v: users) {
+    //             fileWriter.write(index + "; " + v.toCSV());
+    //             index++;
+    //         }
+    //     } catch (IOException e) {
+    //         System.out.println("Error in fileWriter");
+    //     }
     }
 
     public void removeVehicle(Vehicle vehicle, String login){

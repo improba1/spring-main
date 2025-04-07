@@ -7,7 +7,7 @@ import java.util.Date;
 public class Rental {
     private String startTime;
     private boolean isRented;
-    private DateFormat df = new SimpleDateFormat("dd/MM/yyy HH:mm:ss");
+    private transient DateFormat df = new SimpleDateFormat("dd/MM/yyy HH:mm:ss");
 
 
     public String getRentalTime(){

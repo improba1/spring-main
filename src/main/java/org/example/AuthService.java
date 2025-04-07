@@ -20,8 +20,8 @@ public class AuthService {
             String password2 = InputScanner.SCANNER.nextLine();
             if (password.equals(password2)) {
                 String bcryptHash = BCrypt.hashpw(password, BCrypt.gensalt());
-                User user = new User(Role.USER, login, bcryptHash, new ArrayList<>());
-                userRepository.addUser(login, bcryptHash, Role.USER);
+                User user = new User("USER", login, bcryptHash, new ArrayList<>());
+                userRepository.addUser(login, bcryptHash, "USER");
                 userRepository.save();
                 System.out.println("Login and password saved");
                 return user;

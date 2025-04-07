@@ -3,15 +3,8 @@ package org.example;
 import java.io.IOException;
 
 public class Car extends Vehicle {
-    public Car( String brand, String model, int year, int price, boolean rented, String id) throws IOException {
-        super.setBrand(brand);
-        super.setModel(model);
-        super.setModel(model);
-        super.setYear(year);
-        super.setPrice(price);
-        super.setType(Type.CAR);
-        super.setId(id);
-        super.setIsRented(rented);
+    public Car( String brand, String model, int year, int price, boolean rented, String id, String extra) throws IOException {
+        super(brand,model,year, price, "car", id, extra);
     }
     public String toCSV(){
         if(getIsRented())

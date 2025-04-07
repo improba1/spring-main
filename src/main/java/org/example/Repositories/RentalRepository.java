@@ -4,20 +4,22 @@ import java.util.ArrayList;
 
 import org.example.InputScanner;
 import org.example.Rental;
-import org.example.Type;
 import org.example.Vehicle;
+import org.example.VehicleDatabaseManager;
 import org.example.Interfaces.IRentalRepository;
 
 public class RentalRepository implements IRentalRepository{
     private VehicleRepository vehicleRepository;
     private UserRepository userRepository;
+    VehicleDatabaseManager database;
 
     public RentalRepository(VehicleRepository vehicleRepository, UserRepository userRepository){
         this.vehicleRepository = vehicleRepository;
         this.userRepository = userRepository;
+        database = new VehicleDatabaseManager();
     }
 
-    public void rentVehicle(Type type, String login) {
+    public void rentVehicle(String type, String login) {
             ArrayList<Vehicle> availableVehicles = new ArrayList<>();
 
             for(Vehicle v: vehicleRepository.getVehicles()){
@@ -58,10 +60,11 @@ public class RentalRepository implements IRentalRepository{
         System.out.print("Vehicle rental: "+ selectedVehicle.toString());
         userRepository.addVehicle(selectedVehicle, login);
         vehicleRepository.save();
+        database.updateVehicleRentalStatus(selectedVehicle.getId(), true, login);
     }
 
     @Override
-    public void returnVehicle(Type type, String login){
+    public void returnVehicle(String type, String login){
         while(true) {
             ArrayList<Vehicle> availableVehicles = new ArrayList<>();
             for (Vehicle v : userRepository.getVehicles(login)) {
@@ -101,6 +104,7 @@ public class RentalRepository implements IRentalRepository{
             System.out.print("Vehicle returned: " + selectedVehicle.toString());
             userRepository.removeVehicle(selectedVehicle, login);
             vehicleRepository.save();
+            database.updateVehicleRentalStatus(selectedVehicle.getId(), false, login);
         }
     }
 }
