@@ -1,0 +1,14 @@
+[
+  {
+    "login": "admin",
+    "password": "$2a$10$cD6/L3LqvG/ur6PaE60uWu5GalUaKSOS9.LHpULF/kz79d4vekPmC",
+    "role": "ADMIN",
+    "rented": []
+  },
+  {
+    "login": "vika",
+    "password": "$2a$10$adJD70Dkj50ba2FKA9aVX.6zcSlsFUPYZ5VnFiGd8iGKuwBCjOegu",
+    "role": "USER",
+    "rented": []
+  }
+]

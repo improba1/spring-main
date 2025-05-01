@@ -1,0 +1,66 @@
+[
+  {
+    "kategoria": "A",
+    "model": "EX",
+    "brand": "kawasaki",
+    "year": 2009,
+    "price": 4000,
+    "id": "00f26e10-8416-4b5d-a6e2-a982c16ffada",
+    "type": "motorcycle",
+    "is_rented": false,
+    "extra": ""
+  },
+  {
+    "model": "TGA",
+    "brand": "MAN",
+    "year": 2004,
+    "price": 16000,
+    "id": "c8038def-5cfb-42d5-a624-5a18fec115ab",
+    "type": "truck",
+    "is_rented": false,
+    "extra": ""
+  },
+  {
+    "model": "150 e-tetc",
+    "brand": "Evinrude",
+    "year": 2023,
+    "price": 6800,
+    "id": "b5e1db57-b96e-41b8-9efb-d52846b6c522",
+    "type": "boat",
+    "is_rented": false,
+    "extra": "4-stroke"
+  },
+  {
+    "id": "0e0d5352-4fb4-4c32-85b4-5085c5746c0d",
+    "model": "Q7 4M",
+    "brand": "Audi",
+    "year": 2022,
+    "price": 300.0,
+    "type": "car",
+    "extra": "75000 km",
+    "is_rented": false,
+    "category": ""
+  },
+  {
+    "id": "d0a9b1b4-7e16-4ae1-b3ea-ecb3c6fb2e26",
+    "model": "S1000RR",
+    "brand": "BMW",
+    "year": 2020,
+    "price": 150.0,
+    "type": "motorcycle",
+    "extra": "",
+    "is_rented": true,
+    "category": "A"
+  },
+  {
+    "id": "f03b81fa-7c30-4d04-9c79-3e42b1e7b204",
+    "model": "M3 comp",
+    "brand": "BMW",
+    "year": 2024,
+    "price": 900.0,
+    "type": "car",
+    "extra": "",
+    "is_rented": false,
+    "category": ""
+  }
+]
