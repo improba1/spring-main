@@ -89,7 +89,7 @@ public class UserRepository implements IUserRepository{
         for(int i=0;i<users.size();i++){
             if(users.get(i).getLogin().equals(login)){
                 users.get(i).removeVehicle(vehicle);
-                storage.saveReturn(vehicle.getId());
+                storage.saveReturn(login, vehicle.getId());
                 return;
             }
         }

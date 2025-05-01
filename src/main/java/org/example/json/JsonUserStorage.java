@@ -127,15 +127,13 @@ public class JsonUserStorage implements IUserStorage {
         }
     }
 
-    public void saveReturn(String login){
+    public void saveReturn(String login, String vehicleId){
         try {
-            // Загружаем всех пользователей
             ArrayList<UserDTO> users = loadUsersFromFile();
-
-            // Ищем пользователя и очищаем список арендуемых автомобилей
+    
             for (UserDTO user : users) {
                 if (user.login.equals(login)) {
-                    user.rented.clear();
+                    user.rented.removeIf(rv -> rv.id.equals(vehicleId));
                     saveUsersToFile(users);
                     return;
                 }

@@ -195,7 +195,7 @@ public class UserDatabaseManager implements IUserStorage{
         // return users;
     }
 
-    public void saveReturn(String vehicle_id){
+    public void saveReturn(String login, String vehicle_id){
         String deleteOld = "DELETE FROM user_rentals WHERE vehicle_id = ?";
         try (Connection conn = getConnection()) {
             conn.setAutoCommit(false);

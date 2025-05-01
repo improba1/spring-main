@@ -62,5 +62,16 @@
     "extra": "",
     "is_rented": false,
     "category": ""
+  },
+  {
+    "id": "1fca4c54-3844-49cd-8eb9-6a4b7f7481e5",
+    "model": "DB9",
+    "brand": "Aston Martin",
+    "year": 2016,
+    "price": 800.0,
+    "type": "car",
+    "extra": "5.9",
+    "is_rented": false,
+    "category": ""
   }
 ]
